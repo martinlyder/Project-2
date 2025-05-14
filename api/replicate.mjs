@@ -2,28 +2,12 @@
 import Replicate from "replicate";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", ["POST"]);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
 
-  const replicateApiToken = process.env.REPLICATE_API_TOKEN;
-  
-  if (!replicateApiToken) {
-    return res.status(500).json({ error: "API Token not set" });
-  }
-
-  // Manually parse the request body
-  let body = '';
-  for await (const chunk of req) {
-    body += chunk;
-  }
-  
   const { message, model } = JSON.parse(body);
 
   try {
     const replicate = new Replicate({
-      auth: replicateApiToken
+      auth: process.env.REPLICATE_API_TOKEN,
     });
 
     const input = {
@@ -34,6 +18,7 @@ export default async function handler(req, res) {
     const output = await replicate.run(model.id, { input });
     
     return output.join("");
+
   } catch (error) {
     console.error("Error with Replicate API:", error.message);
     return res.status(500).json({ error: error.message });
