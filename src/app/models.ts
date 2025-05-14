@@ -14,20 +14,33 @@ export const AVAILABLE_MODELS: Model[] = [
     id: "meta/meta-llama-3-70b",
     name: " Llama 3, a 70 billion parameter language model from Meta.",
     parameters: {
-      temperature: 0.7,
-      top_p: 0.9,
-      max_tokens: 500,
-      presence_penalty: 1.15
+     top_k: 0,
+     top_p: 0.9,
+     max_tokens: 512,
+     min_tokens: 0,
+     temperature: 0.6,
+     length_penalty: 1,
+     stop_sequences: "<|end_of_text|>",
+     prompt_template: "{prompt}",
+     presence_penalty: 1.15,
+     log_performance_metrics: false
     }
   },
   {
     id: "meta/meta-llama-3-8b-instruct",
     name: "An 8 billion parameter language model from Meta, fine tuned for chat",
     parameters: {
-      temperature: 0.7,
-      top_p: 0.9,
-      max_tokens: 500,
-      presence_penalty: 1.15
+     top_k: 0,
+     top_p: 0.9,
+     max_tokens: 512,
+     min_tokens: 0,
+     temperature: 0.6,
+     system_prompt: "You are a helpful assistant",
+     length_penalty: 1,
+     stop_sequences: "<|end_of_text|>,<|eot_id|>",
+     prompt_template: "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou are a helpful assistant<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+     presence_penalty: 1.15,
+     log_performance_metrics: false
     }
   },
   {
