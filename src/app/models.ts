@@ -11,8 +11,8 @@ export interface Model {
 
 export const AVAILABLE_MODELS: Model[] = [
   {
-    id: "meta/llama-3-8b-instruct",
-    name: "Meta Llama 3 8B Instruct",
+    id: "meta/meta-llama-3-70b",
+    name: " Llama 3, a 70 billion parameter language model from Meta.",
     parameters: {
       temperature: 0.7,
       top_p: 0.9,
@@ -21,8 +21,8 @@ export const AVAILABLE_MODELS: Model[] = [
     }
   },
   {
-    id: "meta/llama-3-70b-instruct",
-    name: "Meta Llama 3 70B Instruct",
+    id: "meta/meta-llama-3-8b-instruct",
+    name: "An 8 billion parameter language model from Meta, fine tuned for chat",
     parameters: {
       temperature: 0.7,
       top_p: 0.9,
@@ -31,28 +31,32 @@ export const AVAILABLE_MODELS: Model[] = [
     }
   },
   {
-    id: "anthropic/claude-3-sonnet",
-    name: "Anthropic Claude 3.7 Sonnet",
+    id: "anthropic/claude-3.5-haiku",
+    name: "Anthropic's fastest, most cost-effective model, with a 200K token context",
     parameters: {
-      temperature: 0.7,
-      max_tokens: 500
+      max_tokens: 8192,
+      system_prompt: "You are the best version of your self."
     }
   },
   {
-    id: "deepseek-ai/deepseek-r1",
-    name: "DeepSeek R1",
+    id: "anthropic/claude-3.7-sonnet",
+    name: "The most intelligent Claude model and the first hybrid reasoning model",
     parameters: {
-      temperature: 0.7,
-      top_p: 0.9,
-      max_tokens: 500
+       max_tokens: 8192,
+       system_prompt: "",
+       max_image_resolution: 0.5
     }
   },
   {
-    id: "google/flan-t5-xl",
-    name: "Flan-T5 XL",
+    id: "google-deepmind/gemma-7b-it:2790a695e5dcae15506138cc4718d1106d0d475e6dca4b1d43f42414647993d5",
+    name: "7B instruct version of Google’s Gemma model",
     parameters: {
-      temperature: 0.7,
-      max_tokens: 500
+     top_k: 50,
+     top_p: 0.95,
+     temperature: 0.7,
+     max_new_tokens: 512,
+     min_new_tokens: -1,
+     repetition_penalty: 1
     }
   }
 ];
