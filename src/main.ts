@@ -26,11 +26,11 @@ import { interval, switchMap, takeWhile } from 'rxjs';
       <div class="main-content">
         <div class="chat-messages">
           <div *ngFor="let message of messages" 
-               class="message" 
-               [class.user-message]="message.isUser"
-               [class.bot-message]="!message.isUser">
-            {{ message.content }}
-          </div>
+            class="message" 
+              [class.user-message]="message.isUser"
+              [class.bot-message]="!message.isUser"
+               [innerHTML]="message.content">
+             </div>
         </div>
         
         <div class="input-container">
@@ -79,6 +79,10 @@ export class App {
     this.currentMessage = '';
   }
 
+convertNewlinesToBr(text: string): string {
+  return text.replace(/\n\n/g, '<br>').replace(/\n/g, '<br>');
+}
+
   pollPrediction(predictionId: string) {
     interval(2000)
       .pipe(
@@ -89,9 +93,10 @@ export class App {
         next: (response) => {
           if (response.status === 'succeeded') {
             const botMessage: Message = {
-              content: response.output.join("") || "Sorry, no response received.",
+              content: this.convertNewlinesToBr(response.output.join("") || "Sorry, no response received."),
               isUser: false
             };
+
             this.messages.push(botMessage);
           } else if (response.status === 'failed') {
             this.displayError();
