@@ -1,4 +1,4 @@
-// /api/replicate.mjs - Full ESM Setup
+// /api/replicate.mjs - Full ESM Setup with Standard Request Handling
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
@@ -13,7 +13,13 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "API Token not set" });
   }
 
-  const { message, model } = await req.json();  
+  // Manually parse the request body
+  let body = '';
+  for await (const chunk of req) {
+    body += chunk;
+  }
+  
+  const { message, model } = JSON.parse(body);
 
   try {
     const input = {
