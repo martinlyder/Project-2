@@ -1,9 +1,5 @@
-// /api/replicate.js - Use .js instead of .ts for simpler compatibility
-const fetch = require('node-fetch');
+// /api/replicate.js - CommonJS with Dynamic Import
 
-/**
- * Replicate API Handler
- */
 module.exports = async function (req, res) {
   if (req.method !== "POST") {
     res.setHeader('Allow', ['POST']);
@@ -19,6 +15,9 @@ module.exports = async function (req, res) {
   const { message, model } = req.body;
 
   try {
+    // Use dynamic import for ESM module
+    const fetch = (await import('node-fetch')).default;
+
     const input = {
       prompt: message,
       ...model.parameters
