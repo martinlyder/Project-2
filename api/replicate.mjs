@@ -1,6 +1,7 @@
-// /api/replicate.js - CommonJS with Dynamic Import
+// /api/replicate.mjs - Full ESM Setup
+import fetch from 'node-fetch';
 
-module.exports = async function (req, res) {
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader('Allow', ['POST']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
@@ -12,12 +13,9 @@ module.exports = async function (req, res) {
     return res.status(500).json({ error: "API Token not set" });
   }
 
-  const { message, model } = req.body;
+  const { message, model } = await req.json();  
 
   try {
-    // Use dynamic import for ESM module
-    const fetch = (await import('node-fetch')).default;
-
     const input = {
       prompt: message,
       ...model.parameters
@@ -45,4 +43,4 @@ module.exports = async function (req, res) {
     console.error("Error with Replicate API:", error.message);
     return res.status(500).json({ error: error.message });
   }
-};
+}
