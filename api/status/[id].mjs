@@ -1,8 +1,8 @@
-// /api/replicate/status/[id].mjs - Check Prediction Status
+// /api/replicate/status/[id].mjs - Full ESM Setup for Dynamic Route
 import Replicate from "replicate";
 
 export default async function handler(req, res) {
-  const { id } = req.query;
+  const { id } = req.query; 
 
   const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN,

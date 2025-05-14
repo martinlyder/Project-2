@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/replicate/status/:id",
+      "destination": "/api/replicate/status/[id].mjs"
+    }
+  ]
+}
