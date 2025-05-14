@@ -89,7 +89,7 @@ export class App {
         next: (response) => {
           if (response.status === 'succeeded') {
             const botMessage: Message = {
-              content: response.output.join(" ") || "Sorry, no response received.",
+              content: response.output.join("") || "Sorry, no response received.",
               isUser: false
             };
             this.messages.push(botMessage);
