@@ -1,11 +1,13 @@
+// main.ts
 import { Component, inject } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { Message, Model, AVAILABLE_MODELS } from './app/models';
 import { ChatService } from './app/chat.service';
 import { provideHttpClient } from '@angular/common/http';
+import { interval, switchMap, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -50,6 +52,7 @@ export class App {
   selectedModel = this.models[0];
   messages: Message[] = [];
   currentMessage = '';
+  isLoading = false;
 
   sendMessage() {
     if (!this.currentMessage.trim()) return;
@@ -60,27 +63,55 @@ export class App {
     };
     
     this.messages.push(userMessage);
-    
+    this.isLoading = true;
+
     this.chatService.sendMessage(this.currentMessage, this.selectedModel)
       .subscribe({
         next: (response) => {
-          const botMessage: Message = {
-            content: response.output,
-            isUser: false
-          };
-          this.messages.push(botMessage);
+          this.pollPrediction(response.predictionId);
         },
         error: (error) => {
           console.error('Error:', error);
-          const errorMessage: Message = {
-            content: 'Sorry, there was an error processing your message.',
-            isUser: false
-          };
-          this.messages.push(errorMessage);
+          this.displayError();
         }
       });
 
     this.currentMessage = '';
+  }
+
+  pollPrediction(predictionId: string) {
+    interval(2000)
+      .pipe(
+        switchMap(() => this.chatService.checkPredictionStatus(predictionId)),
+        takeWhile(response => response.status !== 'succeeded' && response.status !== 'failed', true)
+      )
+      .subscribe({
+        next: (response) => {
+          if (response.status === 'succeeded') {
+            const botMessage: Message = {
+              content: response.output || "Sorry, no response received.",
+              isUser: false
+            };
+            this.messages.push(botMessage);
+          } else if (response.status === 'failed') {
+            this.displayError();
+          }
+          this.isLoading = false;
+        },
+        error: () => {
+          this.displayError();
+          this.isLoading = false;
+        }
+      });
+  }
+
+  displayError() {
+    const errorMessage: Message = {
+      content: 'Sorry, there was an error processing your message.',
+      isUser: false
+    };
+    this.messages.push(errorMessage);
+    this.isLoading = false;
   }
 }
 

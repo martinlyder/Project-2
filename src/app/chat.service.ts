@@ -1,27 +1,19 @@
+// chat.service.ts
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { Model } from './models';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-
   constructor(private http: HttpClient) {}
 
-  sendMessage(message: string, model: Model): Observable<any> {
-    const requestBody = {
-      message: message,
-      model: model
-    };
+  sendMessage(message: string, model: any): Observable<any> {
+    return this.http.post('/api/replicate', { message, model });
+  }
 
-    return this.http.post('/api/replicate', requestBody).pipe(
-      catchError((error) => {
-        console.error("Error in Replicate API:", error);
-        throw error;
-      })
-    );
+  checkPredictionStatus(predictionId: string): Observable<any> {
+    return this.http.get(`/api/replicate/status/${predictionId}`);
   }
 }
