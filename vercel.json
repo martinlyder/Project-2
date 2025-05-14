@@ -3,6 +3,10 @@
     {
       "source": "/api/replicate/status/:id",
       "destination": "/api/replicate/status/[id].mjs"
+    },
+    {
+      "source": "/api/auth",
+      "destination": "/api/auth.mjs"
     }
   ]
 }
