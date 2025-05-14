@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     const output = await replicate.run(model.id, { input });
     
-    return res.status(200).json({ output });
+    return output.join("");
   } catch (error) {
     console.error("Error with Replicate API:", error.message);
     return res.status(500).json({ error: error.message });
