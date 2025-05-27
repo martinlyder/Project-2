@@ -57,11 +57,14 @@ import { interval, switchMap, takeWhile } from 'rxjs';
       
       <div class="main-content">
         <div class="chat-messages">
-          <div *ngFor="let message of messages" 
-            class="message" 
+          <div *ngFor="let message of messages"
+            class="message"
             [class.user-message]="message.isUser"
             [class.bot-message]="!message.isUser"
             [innerHTML]="message.content">
+          </div>
+          <div *ngIf="isLoading" class="loading-dots">
+            <span></span><span></span><span></span>
           </div>
         </div>
         
