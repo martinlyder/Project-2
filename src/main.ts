@@ -157,7 +157,7 @@ export class App {
     let result = text.replace(headingPattern, (_, inner) => `<b>${inner}</b>`);
 
     // Convert each `* item` line to `<ul><li>item</li></ul>`
-    result = result.replace(/^\* +(.+)$/gm, (_, item) => `<ul><li>${item}</li></ul>`);
+    result = result.replace(/^\* +(.+)$/gm, (_, item) => `• ${item}`);
 
     // Preserve new lines as <br> tags
     return result.replace(/\n\n/g, '<br>').replace(/\n/g, '<br>');
