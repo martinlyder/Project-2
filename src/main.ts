@@ -51,6 +51,7 @@ import { interval, switchMap, takeWhile } from 'rxjs';
             {{ model.name }}
           </option>
         </select>
+        <button (click)="resetChat()" class="reset-button">Reset</button>
         <button (click)="logout()" class="logout-button">Logout</button>
       </div>
       
@@ -83,6 +84,7 @@ export class App {
   models = AVAILABLE_MODELS;
   selectedModel = this.models[0];
   messages: Message[] = [];
+  conversationHistory = '';
   currentMessage = '';
   isLoading = false;
 
@@ -113,6 +115,11 @@ export class App {
   logout() {
     this.authService.logout();
     this.messages = [];
+    this.conversationHistory = '';
+  }
+
+  resetChat() {
+    window.location.reload();
   }
 
   sendMessage() {
@@ -122,11 +129,14 @@ export class App {
       content: this.currentMessage,
       isUser: true
     };
-    
+
     this.messages.push(userMessage);
+    // Add user message to the conversation history
+    this.conversationHistory += (this.conversationHistory ? '\n' : '') + `User: ${this.currentMessage}`;
+
     this.isLoading = true;
 
-    this.chatService.sendMessage(this.currentMessage, this.selectedModel)
+    this.chatService.sendMessage(this.conversationHistory, this.selectedModel)
       .subscribe({
         next: (response) => {
           this.pollPrediction(response.predictionId);
@@ -159,6 +169,8 @@ export class App {
             };
 
             this.messages.push(botMessage);
+            // Add assistant message to the conversation history
+            this.conversationHistory += `\nAssistant: ${response.output.join("")}`;
           } else if (response.status === 'failed') {
             this.displayError();
           }
