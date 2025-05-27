@@ -150,8 +150,16 @@ export class App {
     this.currentMessage = '';
   }
 
-  convertNewlinesToBr(text: string): string {
-    return text.replace(/\n\n/g, '<br>').replace(/\n/g, '<br>');
+  transform(text: string): string {
+    // Replace `**some text**` with `<b>some text</b>`
+    const headingPattern = /\*\*(.+?)\*\*/g;
+    let result = text.replace(headingPattern, (_, inner) => `<b>${inner}</b>`);
+
+    // Convert each `* item` line to `<ul><li>item</li></ul>`
+    result = result.replace(/^\* +(.+)$/gm, (_, item) => `<ul><li>${item}</li></ul>`);
+
+    // Preserve new lines as <br> tags
+    return result.replace(/\n\n/g, '<br>').replace(/\n/g, '<br>');
   }
 
   pollPrediction(predictionId: string) {
@@ -164,7 +172,7 @@ export class App {
         next: (response) => {
           if (response.status === 'succeeded') {
             const botMessage: Message = {
-              content: this.convertNewlinesToBr(response.output.join("") || "Sorry, no response received."),
+              content: this.transform(response.output.join("") || "Sorry, no response received."),
               isUser: false
             };
 
