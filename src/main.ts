@@ -119,7 +119,8 @@ export class App {
   }
 
   resetChat() {
-    window.location.reload();
+    this.messages = [];
+    this.conversationHistory = '';
   }
 
   sendMessage() {
