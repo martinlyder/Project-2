@@ -154,7 +154,7 @@ export class App {
   transform(text: string): string {
     // Replace `**some text**` with `<b>some text</b>`
     const headingPattern = /\*\*(.+?)\*\*/g;
-    let result = text.replace(headingPattern, (_, inner) => `<b>${inner}</b>`);
+    let result = text.replace(headingPattern, (_, inner) => `<br><b>${inner}</b>`);
 
     // Convert each `* item` line to `<ul><li>item</li></ul>`
     result = result.replace(/^\* +(.+)$/gm, (_, item) => `• ${item}`);
