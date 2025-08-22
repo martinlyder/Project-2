@@ -12,8 +12,6 @@ A small Angular app for trying out and comparing text-generation models via a si
 * [Scripts](#scripts)
 * [Developing locally](#developing-locally)
 * [Deployment](#deployment)
-* [FAQ](#faq)
-* [Contributing](#contributing)
 * [License](#license)
 
 ## Features
@@ -111,21 +109,6 @@ This repo is set up for Vercel. Typical flow:
 3. Promote a preview to production or merge to trigger a production deploy.
 
 If you deploy elsewhere, serve the `/dist` build output from any static host and route `/api/*` to your Node serverless/express handlers.
-
-## FAQ
-
-**Why serverless endpoints?**
-To avoid exposing API keys in the browser and to consolidate provider logic.
-
-**Can I compare multiple models at once?**
-Yes—either call several endpoints in parallel from the client or create a single `/api/compare` route that fans out server‑side and returns aggregated results.
-
-**Does this include evals or metrics?**
-Not by default. You can add latency/quality metrics and export to CSV/JSON for quick comparisons.
-
-## Contributing
-
-PRs and issues are welcome! If you add a provider or useful UI affordance, please include a short description and any setup notes in your PR.
 
 ## License
 
