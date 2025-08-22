@@ -2,6 +2,8 @@
 
 A small Angular app for trying out and comparing text-generation models via a simple web UI and serverless API routes.
 
+Project demo behind login.
+
 ## Table of contents
 
 * [Features](#features)
